@@ -34,7 +34,9 @@ import { routes } from "../constants/routes";
 import ConfirmationDialog from "../modules/app_manager/components/ConfirmCloseDialog";
 import ManagerAccount from "../modules/app_manager/ManagerAccount/pages/ManagerAccount";
 import ManagerProduct from "../modules/app_manager/ManagerProduct/pages/ManagerProduct";
+import ManagerStoreProduct from "../modules/app_manager/ManagerProduct/pages/ManagerStoreProduct";
 import ManagerStore from "../modules/app_manager/ManagerStore/pages/ManagerStore";
+import ManagerStoreTransaction from "../modules/app_manager/ManagerTransaction/pages/ManagerStoreTransaction";
 import ManagerTransaction from "../modules/app_manager/ManagerTransaction/pages/ManagerTransaction";
 import { PageWrapper } from "../modules/common/Elements";
 import LoadingIcon from "../modules/common/LoadingIcon";
@@ -83,11 +85,11 @@ const SUB_MENU: some[] = [
     route: routes.PRODUCT_MANAGEMENT,
     component: ManagerProduct,
   },
-  {
-    name: "Giao dịch",
-    route: routes.TRANSACTION_MANAGEMENT,
-    component: ManagerTransaction,
-  },
+  // {
+  //   name: "Giao dịch",
+  //   route: routes.TRANSACTION_MANAGEMENT,
+  //   component: ManagerTransaction,
+  // },
   {
     name: "Cửa hàng",
     route: routes.STORE_MANAGER,
@@ -104,6 +106,18 @@ const SUB_MENU_STORE: some[] = [
     name: "Giao dịch",
     route: routes.STORE_TRANSACTION_MANAGEMENT,
     component: ManagerTransaction,
+  },
+];
+const SUB_MENU_STORE_MANAGER: some[] = [
+  {
+    name: "Sản phẩm cửa hàng",
+    route: routes.STORE_MANAGER_PRODUCT,
+    component: ManagerStoreProduct,
+  },
+  {
+    name: "Giao dịch cửa hàng",
+    route: routes.STORE_MANAGER_TRANSACTION,
+    component: ManagerStoreTransaction,
   },
 ];
 
@@ -488,7 +502,7 @@ const MainLayout: React.FC<RouteComponentProps<any> & Props> = (props) => {
                     />
                   )
                 )
-              : [...SIDE_BAR_MENU, ...SUB_MENU].map((item: some) => (
+              : [...SIDE_BAR_MENU, ...SUB_MENU, ...SUB_MENU_STORE_MANAGER].map((item: some) => (
                   <Route
                     exact
                     path={item.route}

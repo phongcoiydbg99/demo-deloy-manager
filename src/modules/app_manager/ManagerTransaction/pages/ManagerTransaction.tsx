@@ -42,11 +42,16 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
       const filterParams = queryString.parse(
         window.location.search
       ) as unknown as any;
-      setFilter({
+      JSON.stringify({
         ...filterParams,
-        page: parseInt(`${filterParams.page}`) || 0,
-        size: parseInt(`${filterParams.size}`) || 10,
-      });
+        page: parseInt(`${filterParams.page}`, 0),
+        size: parseInt(`${filterParams.size}`, 10),
+      }) !== JSON.stringify(filter) &&
+        setFilter({
+          ...filterParams,
+          page: parseInt(`${filterParams.page}`, 0),
+          size: parseInt(`${filterParams.size}`, 10),
+        });
     } else {
       history.replace({
         search: queryString.stringify(defaultManagerTransactionFilter),

@@ -1,34 +1,44 @@
-import { Avatar, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import queryString from "query-string";
 import React from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { GREY_600 } from "../../../../assets/theme/colors";
 import { some, SUCCESS_CODE } from "../../../../constants/constants";
-import { Row, snackbarSetting } from "../../../common/Elements";
+import { formatter } from "../../../../utils/helpers/helpers";
+import { Row } from "../../../common/Elements";
 import TableCustom from "../../../common/TableCustom";
 import { AppState } from "../../../rootReducer";
 import DeleteDialog from "../../components/DeleteDialog";
 import HeaderManagement from "../../components/HeaderManagement";
 import "../../Management.scss";
-import { actionGetAccountManager } from "../../managerAction";
-import ActionAccountDialog from "../components/ActionAccountDialog";
+import { actionListBillManager } from "../../managerAction";
 import Filter from "../components/Filter";
-import { defaultManagerAccountFilter, IManagerAccountFilter } from "../utils";
+import {
+  defaultManagerTransactionFilter,
+  IManagerTransactionFilter,
+} from "../utils";
+import ActionTransactionDialog from "../components/ActionTransactionDialog";
 
-function mapStateToProps(state: AppState) {
-  return {
-    profile: state.system.profile,
-  };
+interface Props {}
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
 }
-interface Props extends ReturnType<typeof mapStateToProps> {}
-const ManagerAccount: React.FC<RouteComponentProps<any> & Props> = (props) => {
-  const [dataAccountManager, setDataAccountManager] = React.useState<some>();
+
+const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
+  props
+) => {
+  const query = useQuery();
+  const storeId = query.get("id");
+  const storeName = query.get("name") || "";
   const history = useHistory();
-  const [filter, setFilter] = React.useState<IManagerAccountFilter>(
-    defaultManagerAccountFilter
+  const [dataBillManager, setDataBillManager] = React.useState<some>();
+  const [filter, setFilter] = React.useState<IManagerTransactionFilter>(
+    defaultManagerTransactionFilter
   );
+
   const updateQueryParams = React.useCallback(() => {
     if (window.location.search) {
       const filterParams = queryString.parse(
@@ -46,109 +56,111 @@ const ManagerAccount: React.FC<RouteComponentProps<any> & Props> = (props) => {
         });
     } else {
       history.replace({
-        search: queryString.stringify(defaultManagerAccountFilter),
+        search: queryString.stringify(defaultManagerTransactionFilter),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, window.location.search]);
+
   React.useEffect(() => {
     updateQueryParams();
   }, [updateQueryParams]);
 
-  const fetchListAccountManager = async () => {
+  const fetchListBillManager = async () => {
     try {
-      const res: some = await actionGetAccountManager(filter);
+      const res: some = await actionListBillManager({
+        ...filter,
+        StoreID: storeId,
+      });
       if (res?.code === SUCCESS_CODE) {
-        setDataAccountManager(res);
+        setDataBillManager(res);
       } else {
-        showNotifySnack(res);
       }
     } catch (error) {}
   };
 
-  const showNotifySnack = (res: any) => {
-    enqueueSnackbar(
-      res?.message,
-      snackbarSetting((key) => closeSnackbar(key), {
-        color: res?.code === SUCCESS_CODE ? "success" : "error",
-      })
-    );
-  };
-
   React.useEffect(() => {
-    fetchListAccountManager(); // eslint-disable-next-line
+    fetchListBillManager(); // eslint-disable-next-line
   }, [filter]);
+
   const columns = [
     {
-      width: 5,
-      styleHeader: { color: GREY_600 },
-      dataIndex: "name",
-      render: (record: any) => {
-        return (
-          <Row>
-            <Avatar>{record.name.substr(0, 1)}</Avatar>
-          </Row>
-        );
-      },
-    },
-    {
-      title: "IDS_CHAT_USERNAME",
-      dataIndex: "userName",
+      title: "IDS_CHAT_BUYACCOUNT",
+      dataIndex: "buyerAccount",
       styleHeader: { color: GREY_600 },
     },
     {
-      title: "IDS_CHAT_GENDER",
-      dataIndex: "gender",
-      styleHeader: { color: GREY_600 },
-    },
-    // {
-    //   title: "IDS_CHAT_PROFILE_PHOTO",
-    //   dataIndex: "profilePhoto",
-    //   styleHeader: { color: GREY_600 },
-    // },
-    {
-      title: "IDS_CHAT_FIRSTNAME",
-      dataIndex: "firstName",
-      styleHeader: { color: GREY_600 },
-    },
-    {
-      title: "IDS_CHAT_LASTNAME",
-      dataIndex: "lastName",
-      styleHeader: { color: GREY_600 },
-    },
-    {
-      title: "IDS_CHAT_NAME",
-      dataIndex: "name",
-      styleHeader: { color: GREY_600 },
-    },
-    {
-      title: "IDS_CHAT_EMAIL",
-      dataIndex: "email",
-      styleHeader: { color: GREY_600 },
-    },
-    {
-      title: "IDS_CHAT_PHONE_NUMBER",
-      dataIndex: "phoneNumber",
-      styleHeader: { color: GREY_600 },
-    },
-    // {
-    //   title: "IDS_CHAT_PHONE_LOCATION",
-    //   dataIndex: "location",
-    //   styleHeader: { color: GREY_600 },
-    // },
-    {
-      title: "IDS_CHAT_DATE_OF_BIRTH",
-      dataIndex: "dateOfBirth",
+      title: "IDS_CHAT_ORDERTIME",
+      dataIndex: "orderTime",
       styleHeader: { color: GREY_600 },
       render: (record: any) => {
-        let date = new Date(record.dateOfBirth);
+        let date = new Date(record.orderTime);
         return (
           <Typography
             style={{
               fontSize: 12,
             }}
           >
-            {record.dateOfBirth ? date.toLocaleDateString() : "Chưa giao"}
+            {date.toLocaleString()}
+          </Typography>
+        );
+      },
+    },
+    {
+      title: "IDS_CHAT_SHIPTIME",
+      dataIndex: "shipTime",
+      styleHeader: { color: GREY_600 },
+      render: (record: any) => {
+        let date = new Date(record.shipTime);
+        return (
+          <Typography
+            style={{
+              fontSize: 12,
+            }}
+          >
+            {record.status === 1 ? date.toLocaleString() : "Chưa giao"}
+          </Typography>
+        );
+      },
+    },
+    {
+      title: "IDS_CHAT_STATUS",
+      dataIndex: "status",
+      styleHeader: { color: GREY_600 },
+      render: (record: any) => {
+        return (
+          <Typography
+            style={{
+              fontSize: 12,
+              color:
+                record.status === 1
+                  ? "green"
+                  : record.status === 2
+                  ? "red"
+                  : "grey",
+            }}
+          >
+            {record.status === 1
+              ? "Đã giao"
+              : record.status === 2
+              ? "Đã hủy"
+              : "Chưa giao"}
+          </Typography>
+        );
+      },
+    },
+    {
+      title: "IDS_CHAT_TOTAL",
+      dataIndex: "productsTotal",
+      styleHeader: { color: GREY_600 },
+      render: (record: any) => {
+        return (
+          <Typography
+            style={{
+              fontSize: 12,
+            }}
+          >
+            {formatter(record.productsTotal)}
           </Typography>
         );
       },
@@ -156,16 +168,14 @@ const ManagerAccount: React.FC<RouteComponentProps<any> & Props> = (props) => {
     {
       title: "IDS_CHAT_ACTION",
       dataIndex: "id",
-      width: 100,
+      width: 300,
       styleHeader: { color: GREY_600, textAlign: "center" },
       render: (record: any) => {
         return (
           <Row className="action-container" key={record?.id}>
-            <ActionAccountDialog
-              item={record}
-              fetchData={fetchListAccountManager}
-            />
-            <DeleteDialog item={record} fetchData={fetchListAccountManager} />
+            {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
+            <ActionTransactionDialog item={record} />
+            <DeleteDialog item={record} fetchData={fetchListBillManager} />
           </Row>
         );
       },
@@ -173,25 +183,26 @@ const ManagerAccount: React.FC<RouteComponentProps<any> & Props> = (props) => {
   ];
   return (
     <div className="management-container">
-      <HeaderManagement fetchData={fetchListAccountManager} />
+      {/* <HeaderManagement fetchData={fetchData} searchData={searchEmployee} /> */}
+      <HeaderManagement fetchData={() => {}} storeName={storeName} />
       <Filter
         filter={filter}
         onUpdateFilter={(values) => {
           history.replace({
             search: queryString.stringify({
               ...values,
-              // status: JSON.stringify(values.status),
+              // ...filter,
             }),
           });
         }}
       />
       <TableCustom
-        dataSource={dataAccountManager?.data || []}
+        dataSource={dataBillManager?.detail || []}
         columns={columns}
         noColumnIndex
         onRowClick={(record: some, index: number) => {}}
         paginationProps={{
-          count: dataAccountManager?.total || 0,
+          count: dataBillManager?.total || 0,
           page: filter.page || 0,
           rowsPerPage: filter.size || 10,
           onChangePage: (event: unknown, newPage: number) => {
@@ -217,11 +228,4 @@ const ManagerAccount: React.FC<RouteComponentProps<any> & Props> = (props) => {
   );
 };
 
-export default connect(mapStateToProps)(withRouter(ManagerAccount));
-function enqueueSnackbar(message: any, arg1: any) {
-  throw new Error("Function not implemented.");
-}
-
-function closeSnackbar(key: string): void {
-  throw new Error("Function not implemented.");
-}
+export default withRouter(ManagerStoreTransaction);

@@ -22,6 +22,10 @@ import {
 } from "../../managerAction";
 import Filter from "../components/Filter";
 import { defaultManagerAccountFilter, IManagerAccountFilter } from "../utils";
+import StorefrontIcon from "@material-ui/icons/Storefront";
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import Icon from '@material-ui/core/Icon'
+import { routes } from "../../../../constants/routes";
 function mapStateToProps(state: AppState) {
   return {
     profile: state.system.profile,
@@ -160,6 +164,18 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
                 ? "Đã Cấm"
                 : "Chờ xác nhận"}
             </Typography>
+          </Row>
+        );
+      },
+    },
+    {
+      title: "IDS_CHAT_ACTION",
+      dataIndex: "id",
+      width: 100,
+      styleHeader: { color: GREY_600, textAlign: "center" },
+      render: (record: any) => {
+        return (
+          <Row className="action-container" key={record?.id}>
             {(record.approved === 0 || record.approved === 2) && (
               <IconButton
                 onClick={() => {
@@ -184,6 +200,16 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
                 <DeleteIcon />
               </IconButton>
             )}
+            <IconButton onClick={() => {
+              props?.history?.push(`${routes.STORE_MANAGER_PRODUCT}?name=${record.name}&id=${record.id}&page=0&size=10`);
+            }}>
+              <StorefrontIcon />
+            </IconButton>
+            <IconButton onClick={() => {
+              props?.history?.push(`${routes.STORE_MANAGER_TRANSACTION}?name=${record.name}&id=${record.id}&page=0&size=10`);
+            }}>
+              <ReceiptIcon color="primary"/>
+            </IconButton>
           </Row>
         );
       },

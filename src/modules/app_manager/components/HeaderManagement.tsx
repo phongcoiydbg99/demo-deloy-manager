@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { routes } from "../../../constants/routes";
 import { Row } from "../../common/Elements";
@@ -9,6 +9,7 @@ import ActionProductDialogCreate from "../ManagerProduct/components/ActionProduc
 
 interface Props {
   fetchData: () => void;
+  storeName?: string;
   // searchData: () => void;
 }
 
@@ -17,7 +18,7 @@ const HeaderManagement: React.FC<RouteComponentProps<any> & Props> = (
 ) => {
   const intl = useIntl();
   const { pathname } = props?.location;
-  const { fetchData } = props;
+  const { fetchData, storeName } = props;
 
   const getTitle = () => {
     if (pathname === routes.ACCOUNT_MANAGEMENT)
@@ -56,6 +57,18 @@ const HeaderManagement: React.FC<RouteComponentProps<any> & Props> = (
         placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
         // content: <ActionProductDialogCreate fetchData={fetchData} />,
       };
+    if (pathname === routes.STORE_MANAGER_PRODUCT)
+      return {
+        title: "IDS_CHAT_STORE_MANAGER_VALUE",
+        placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
+        // content: <ActionProductDialogCreate fetchData={fetchData} />,
+      };
+    if (pathname === routes.STORE_MANAGER_TRANSACTION)
+      return {
+        title: "IDS_CHAT_STORE_MANAGER_VALUE",
+        placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
+        // content: <ActionProductDialogCreate fetchData={fetchData} />,
+      };
     return {
       title: "IDS_APP_MANAGEMENT",
       content: null,
@@ -73,7 +86,14 @@ const HeaderManagement: React.FC<RouteComponentProps<any> & Props> = (
         }}
       >
         <Typography variant="subtitle1" component="p">
-          {intl.formatMessage({ id: getTitle().title })}
+          {storeName ? (
+            <FormattedMessage
+              id={getTitle().title}
+              values={{ value: storeName }}
+            />
+          ) : (
+            intl.formatMessage({ id: getTitle().title })
+          )}
         </Typography>
         <Row>{getTitle().content}</Row>
       </Row>

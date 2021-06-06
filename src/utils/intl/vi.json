@@ -173,6 +173,7 @@
   "IDS_CHAT_TOTAL": "Tổng",
   "IDS_CHAT_LISTITEAM": "Products",
   "IDS_CHAT_STORE_MANAGER": "Quản lý cửa hàng",
+  "IDS_CHAT_STORE_MANAGER_VALUE": "Quản lý cửa hàng {value}",
   "IDS_CHAT_STORE_NAME": "Tên cửa hàng",
   "IDS_CHAT_FOLLOW_COUNT": "Số lượng follow",
   "IDS_CHAT_STAR": "Số lượt đánh giá",

@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import queryString from "query-string";
 import React from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { GREY_600 } from "../../../../assets/theme/colors";
 import { some, SUCCESS_CODE, USER_ROLE } from "../../../../constants/constants";
@@ -14,42 +14,42 @@ import DeleteDialog from "../../components/DeleteDialog";
 import HeaderManagement from "../../components/HeaderManagement";
 import "../../Management.scss";
 import { actionGetProductManager } from "../../managerAction";
-import {
-  defaultManagerProductFilter,
-  IManagerProductFilter,
-} from "../../ManagerProduct/utils";
+import { defaultManagerProductFilter, IManagerProductFilter } from "../utils";
 import ActionProductDialog from "../components/ActionProductDialog";
 import Filter from "../components/Filter";
 
-function mapStateToProps(state: AppState) {
-  return {
-    profile: state.system.profile,
-  };
+interface Props {}
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
 }
-interface Props extends ReturnType<typeof mapStateToProps> {}
-const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
-  const { profile } = props;
-  const adminRole = localStorage.getItem(USER_ROLE)?.indexOf("Admin") !== -1;
+const ManagerStoreProduct: React.FC<RouteComponentProps<any> & Props> = (
+  props
+) => {
   const [dataProductManager, setDataProductManager] = React.useState<some>();
   const history = useHistory();
+  const query = useQuery();
+  const storeId = query.get("id");
+  const storeName = query.get("name") || "";
   const [filter, setFilter] = React.useState<IManagerProductFilter>(
     defaultManagerProductFilter
   );
+
   const updateQueryParams = React.useCallback(() => {
     if (window.location.search) {
       const filterParams = queryString.parse(
         window.location.search
       ) as unknown as any;
-      JSON.stringify( {
+      JSON.stringify({
         ...filterParams,
         page: parseInt(`${filterParams.page}`, 0),
         size: parseInt(`${filterParams.size}`, 10),
       }) !== JSON.stringify(filter) &&
-      setFilter({
-        ...filterParams,
-        page: parseInt(`${filterParams.page}`, 0),
-        size: parseInt(`${filterParams.size}`, 10),
-      });
+        setFilter({
+          ...filterParams,
+          page: parseInt(`${filterParams.page}`, 0),
+          size: parseInt(`${filterParams.size}`, 10),
+        });
     } else {
       history.replace({
         search: queryString.stringify(defaultManagerProductFilter),
@@ -66,10 +66,8 @@ const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
     try {
       const res: some = await actionGetProductManager({
         ...filter,
-        StoreID: adminRole ? undefined : profile?.userInfo?.store?.id,
-        // ...filters,
+        StoreID: storeId,
       });
-      console.log("sadsdadsa2");
       if (res?.code === SUCCESS_CODE) {
         setDataProductManager(res);
       } else {
@@ -78,7 +76,6 @@ const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
   };
 
   React.useEffect(() => {
-    console.log("sadsdadsa5");
     fetchListProductManager(); // eslint-disable-next-line
   }, [filter]);
 
@@ -254,7 +251,7 @@ const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
   return (
     <div className="management-container">
       {/* <HeaderManagement fetchData={fetchData} searchData={searchEmployee} /> */}
-      <HeaderManagement fetchData={fetchListProductManager} />
+      <HeaderManagement fetchData={fetchListProductManager} storeName={storeName}/>
       <Filter
         filter={filter}
         onUpdateFilter={(values) => {
@@ -298,4 +295,4 @@ const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
   );
 };
 
-export default connect(mapStateToProps)(withRouter(ManagerProduct));
+export default withRouter(ManagerStoreProduct);
