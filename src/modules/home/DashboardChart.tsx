@@ -1,18 +1,18 @@
-import { Box, Typography } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import React from "react";
-import { default as ReactApexChart } from "react-apexcharts";
-import { useIntl } from "react-intl";
-import { some, SUCCESS_CODE } from "../../constants/constants";
+import { Box, Typography } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import { default as ReactApexChart } from 'react-apexcharts';
+import { useIntl } from 'react-intl';
+import { some, SUCCESS_CODE } from '../../constants/constants';
 import {
   actionGetDataColumn,
   actionGetDataPie,
-} from "../app_manager/managerAction";
-import { Row } from "../common/Elements";
-import FormControlTextField from "../common/FormControlTextField";
+} from '../app_manager/managerAction';
+import { Row } from '../common/Elements';
+import FormControlTextField from '../common/FormControlTextField';
 const DashboardChart = (props: any) => {
-  const [startDate, setStartDate] = React.useState<string>("2021-05-14");
-  const [endDate, setEndDate] = React.useState<string>("2021-06-03");
+  const [startDate, setStartDate] = React.useState<string>('2021-05-14');
+  const [endDate, setEndDate] = React.useState<string>('2021-06-03');
   const [dataColumn, setDataColumn] = React.useState<some>({});
   const [dataPie, setDataPie] = React.useState<some>({});
   const intl = useIntl();
@@ -55,14 +55,14 @@ const DashboardChart = (props: any) => {
   };
   const series = [
     {
-      name: "Doanh thu",
+      name: 'Doanh thu',
       data: ConvertDataColumn().y,
     },
   ];
   const options = {
     chart: {
       height: 350,
-      type: "line",
+      type: 'line',
       zoom: {
         enabled: false,
       },
@@ -71,15 +71,15 @@ const DashboardChart = (props: any) => {
       enabled: false,
     },
     stroke: {
-      curve: "straight",
+      curve: 'straight',
     },
     title: {
-      text: "Thống kê doanh thu theo ngày",
-      align: "left",
+      text: 'Thống kê doanh thu theo ngày',
+      align: 'left',
     },
     grid: {
       row: {
-        colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
         opacity: 0.5,
       },
     },
@@ -92,7 +92,7 @@ const DashboardChart = (props: any) => {
   const optionsPie = {
     chart: {
       width: 380,
-      type: "pie",
+      type: 'pie',
     },
     labels: dataPie?.data?.series,
     responsive: [
@@ -103,7 +103,7 @@ const DashboardChart = (props: any) => {
             width: 200,
           },
           legend: {
-            position: "bottom",
+            position: 'bottom',
           },
         },
       },
@@ -112,50 +112,50 @@ const DashboardChart = (props: any) => {
 
   return (
     <Box style={{ padding: 24 }}>
-      <Row className="header-management">
-        <Typography variant="subtitle1" component="p">
-          {intl.formatMessage({ id: "IDS_DASHBOARD" })}
+      <Row className='header-management'>
+        <Typography variant='subtitle1' component='p'>
+          {intl.formatMessage({ id: 'IDS_DASHBOARD' })}
         </Typography>
       </Row>
       <Row>
         <FormControlTextField
-          id="date"
-          label="Từ Ngày"
-          type="date"
+          id='date'
+          label='Từ Ngày'
+          type='date'
           value={startDate}
-          placeholder={intl.formatMessage({ id: "Chọn" })}
+          placeholder={intl.formatMessage({ id: 'Chọn' })}
           onChange={(event: any) => setStartDate(event.target.value)}
           formControlStyle={{ width: 80 }}
         />
         <FormControlTextField
-          id="date"
-          label="Đến Ngày"
-          type="date"
+          id='date'
+          label='Đến Ngày'
+          type='date'
           value={endDate}
-          placeholder={intl.formatMessage({ id: "Chọn" })}
+          placeholder={intl.formatMessage({ id: 'Chọn' })}
           onChange={(event: any) => setEndDate(event.target.value)}
           formControlStyle={{ width: 80 }}
         />
       </Row>
-      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <Paper style={{ flex: 1 }} elevation={5}>
           <ReactApexChart
             options={options || {}}
             series={series || {}}
-            type="line"
+            type='line'
             height={450}
           />
         </Paper>
-        <div style={{ flex: 1, paddingLeft: "5%" }}>
+        <div style={{ flex: 1, paddingLeft: '5%' }}>
           <Paper elevation={5}>
-            <Typography variant="h5" style={{ padding: 10 }}>
+            <Typography variant='h5' style={{ padding: 10 }}>
               Thống kê theo sản phẩm
             </Typography>
             <ReactApexChart
               options={optionsPie || {}}
               series={seriesPie || {}}
-              type="pie"
-              width={600}
+              type='pie'
+              height={450}
             />
           </Paper>
         </div>
