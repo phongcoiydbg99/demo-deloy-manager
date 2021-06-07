@@ -39,6 +39,7 @@ import ManagerStoreProduct from "../modules/app_manager/ManagerProduct/pages/Man
 import ManagerStore from "../modules/app_manager/ManagerStore/pages/ManagerStore";
 import ManagerStoreTransaction from "../modules/app_manager/ManagerTransaction/pages/ManagerStoreTransaction";
 import ManagerTransaction from "../modules/app_manager/ManagerTransaction/pages/ManagerTransaction";
+import StoreProfile from "../modules/app_manager/profile/StoreProfile";
 import { PageWrapper } from "../modules/common/Elements";
 import LoadingIcon from "../modules/common/LoadingIcon";
 import DashboardChart from "../modules/home/DashboardChart";
@@ -124,6 +125,14 @@ const SUB_MENU_STORE_MANAGER: some[] = [
     name: "Giao dịch cửa hàng",
     route: routes.STORE_MANAGER_TRANSACTION,
     component: ManagerStoreTransaction,
+  },
+];
+
+const SUB_MENU_PROFILE: some[] = [
+  {
+    name: "Thông tin cửa hàng",
+    route: routes.PROFILE_MANAGER,
+    component: StoreProfile,
   },
 ];
 
@@ -467,6 +476,18 @@ const MainLayout: React.FC<RouteComponentProps<any> & Props> = (props) => {
           anchorOrigin={{ vertical: "top", horizontal: "left" }}
           transformOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
+          {isStore && (
+            <Typography
+              variant="body2"
+              onClick={() => {
+                handleCloseMenu();
+                gotoAction(routes.PROFILE_MANAGER);
+              }}
+              className={classes.menuItem}
+            >
+              {intl.formatMessage({ id: "IDS_PROFILE_STORE" })}
+            </Typography>
+          )}
           <Typography
             variant="body2"
             onClick={() => {
@@ -498,7 +519,19 @@ const MainLayout: React.FC<RouteComponentProps<any> & Props> = (props) => {
         <React.Suspense fallback={<LoadingIcon />}>
           <Switch>
             {isStore
-              ? [...SIDE_BAR_MENU_STORE, ...SUB_MENU_STORE].map(
+              ? [
+                  ...SIDE_BAR_MENU_STORE,
+                  ...SUB_MENU_STORE,
+                  ...SUB_MENU_PROFILE,
+                ].map((item: some) => (
+                  <Route
+                    exact
+                    path={item.route}
+                    component={item.component}
+                    key={item.route}
+                  />
+                ))
+              : [...SIDE_BAR_MENU, ...SUB_MENU, ...SUB_MENU_STORE_MANAGER].map(
                   (item: some) => (
                     <Route
                       exact
@@ -507,15 +540,7 @@ const MainLayout: React.FC<RouteComponentProps<any> & Props> = (props) => {
                       key={item.route}
                     />
                   )
-                )
-              : [...SIDE_BAR_MENU, ...SUB_MENU, ...SUB_MENU_STORE_MANAGER].map((item: some) => (
-                  <Route
-                    exact
-                    path={item.route}
-                    component={item.component}
-                    key={item.route}
-                  />
-                ))}
+                )}
           </Switch>
         </React.Suspense>
       </main>

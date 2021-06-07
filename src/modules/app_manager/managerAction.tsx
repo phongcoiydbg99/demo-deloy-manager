@@ -31,6 +31,16 @@ export const actionAddCategory = (data?: some) => {
 export const actionDeleteCategory = (data?: some) => {
   return api({ method: "delete", url: "/Category/DeleteCategory", data });
 };
+export const actionUpdateStore = (data?: some) => {
+  return api({ method: "post", url: "/Store/UpdateStore", data });
+};
+export const actionGetStoreByID = (params?: some) => {
+  return api({
+    method: "get",
+    url: "/Store/GetStoreByID",
+    params,
+  });
+};
 export const actionGetAllProduct = (params?: some) => {
   return api({
     method: "get",

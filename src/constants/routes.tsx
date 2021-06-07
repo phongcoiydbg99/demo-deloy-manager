@@ -17,4 +17,5 @@ export const routes: some = {
   STORE_MANAGER_PRODUCT: '/management/store/product',
   STORE_MANAGER_TRANSACTION: '/management/store/transaction',
   CATEGORY_MANAGER: '/management/category',
+  PROFILE_MANAGER: '/management/profile',
 };

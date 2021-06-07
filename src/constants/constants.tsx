@@ -7,6 +7,7 @@ export const NORMAL_ACCOUNT: string = 'NORMAL_ACCOUNT';
 export const DEVICE_ID: string = 'DEVICE_ID';
 export const UUID: string = 'UUID';
 export const USER_ROLE: string = 'USER_ROLE';
+export const USER_PROFILE: string = 'USER_PROFILE';
 
 export const SUCCESS_CODE = 200;
 export const STATUS_MESSAGE: some = {

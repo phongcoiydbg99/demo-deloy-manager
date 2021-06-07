@@ -23,6 +23,7 @@ import {
   USER_ROLE,
   some,
   SUCCESS_CODE,
+  USER_PROFILE,
 } from '../../constants/constants';
 import { AppState } from '../../modules/rootReducer';
 import { isEmpty } from '../../utils/helpers/helpers';
@@ -47,6 +48,7 @@ const LoginForm: React.FC<RouteComponentProps<any> & Props> = (props) => {
         localStorage.setItem(ACCESS_TOKEN, res?.token);
         localStorage.setItem('StoreID', res?.userInfo?.store?.id);
         localStorage.setItem(USER_ROLE, JSONbig.stringify(res?.userInfo?.role));
+        localStorage.setItem(USER_PROFILE, JSONbig.stringify(res?.userInfo));
         if (localStorage.getItem(USER_ROLE)?.indexOf("User") !== -1) {
           localStorage.removeItem(ACCESS_TOKEN);
           enqueueSnackbar(

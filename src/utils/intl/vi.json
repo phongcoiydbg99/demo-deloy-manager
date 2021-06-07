@@ -186,5 +186,7 @@
   "IDS_PRICE_RANGE": "Khoảng giá:",
   "IDS_PRICE_RANGE_HOLDER": "Nhập giá",
   "IDS_CHOOSE_HOLDER": "Chọn",
-  "IDS_STAR_RANGE": "Số sao:"
+  "IDS_STAR_RANGE": "Số sao:",
+  "IDS_PROFILE_STORE": "Thông tin cửa hàng",
+  "IDS_CHAT_STORE_DETAIL": "Thông tin chi tiết"
 }

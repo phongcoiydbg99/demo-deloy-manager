@@ -75,6 +75,12 @@ const HeaderManagement: React.FC<RouteComponentProps<any> & Props> = (
         placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
         // content: <ActionProductDialogCreate fetchData={fetchData} />,
       };
+    if (pathname === routes.PROFILE_MANAGER)
+      return {
+        title: "IDS_PROFILE_STORE",
+        placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
+        // content: <ActionProductDialogCreate fetchData={fetchData} />,
+      };
     return {
       title: "IDS_APP_MANAGEMENT",
       content: null,
