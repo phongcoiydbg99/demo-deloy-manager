@@ -28,6 +28,9 @@ export const actionUpdateCategory = (data?: some) => {
 export const actionAddCategory = (data?: some) => {
   return api({ method: "post", url: "/Category/AddCategory", data });
 };
+export const actionDeleteCategory = (data?: some) => {
+  return api({ method: "delete", url: "/Category/DeleteCategory", data });
+};
 export const actionGetAllProduct = (params?: some) => {
   return api({
     method: "get",

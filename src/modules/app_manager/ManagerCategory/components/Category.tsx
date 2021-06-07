@@ -309,6 +309,10 @@ const Category: React.FC<Props> = (props) => {
                 titleTooltip="Thêm danh mục con"
               />
             </Box>
+
+            <Box style={{ flex: 1 }}>
+              <DeleteDialog item={category} fetchData={fetchAllCategory} category={true}/>
+            </Box>
           </Row>
           <Box style={{ paddingBottom: 20 }}>
             <TableCustom
