@@ -95,14 +95,6 @@ const StoreProfile: React.FC<RouteComponentProps<any> & Props> = (props) => {
       if (res?.code === SUCCESS_CODE) {
         if (res?.store) {
           setStoreData(res?.store);
-          setValue("Name", res?.store.name, {
-            shouldValidate: true,
-            shouldDirty: true,
-          });
-          setValue("Detail", res?.store.detail, {
-            shouldValidate: true,
-            shouldDirty: true,
-          });
         }
       } else {
       }
@@ -115,6 +107,17 @@ const StoreProfile: React.FC<RouteComponentProps<any> & Props> = (props) => {
   React.useEffect(() => {
     fetchGetStoreByID();
   }, []);
+
+  React.useEffect(() => {
+    setValue("Name", store?.name, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("Detail", store?.detail, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });fetchGetStoreByID();
+  }, [store]);
 
   const onSubmit = async (data: any) => {
     try {
@@ -355,6 +358,7 @@ const StoreProfile: React.FC<RouteComponentProps<any> & Props> = (props) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            marginTop: "25%",
           }}
         >
           <CircularProgress />

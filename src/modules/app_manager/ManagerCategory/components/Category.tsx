@@ -200,129 +200,154 @@ const Category: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Row>
+      {!loadding ? (
         <Box
           style={{
-            flex: 1,
-            height: 550,
-            overflow: "scroll",
-            backgroundColor: "white",
-            borderRadius: 5,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderColor: "#ebebeb",
-            marginRight: 10,
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "25%",
           }}
         >
-          <Row
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Row>
+          <Box
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingTop: 20,
-              paddingLeft: 20,
-              paddingRight: 20,
+              flex: 1,
+              height: 550,
+              overflow: "scroll",
+              backgroundColor: "white",
+              borderRadius: 5,
+              borderStyle: "solid",
+              borderWidth: 1,
+              borderColor: "#ebebeb",
+              marginRight: 10,
             }}
           >
-            <Typography color="inherit" variant="h5" style={{}}>
-              Danh mục
-            </Typography>
-            <ActionCategoryDialogCreate
-              fetchData={fetchAllCategory}
-              itemParent={emptyCategory}
-              titleTooltip="Thêm danh mục gốc"
-            />
-          </Row>
-
-          {!loadding && (
-            <Box
+            <Row
               style={{
-                height: "100%",
-                width: "100%",
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          )}
-          <TreeView
-            defaultExpanded={[categoryID]}
-            selected={[categoryID]}
-            className={classes.root}
-            defaultCollapseIcon={
-              <ArrowRightIcon
-                style={{
-                  marginBottom: 5,
-                }}
-              />
-            }
-            defaultExpandIcon={
-              <ArrowDropDownIcon
-                style={{
-                  marginBottom: 5,
-                }}
-              />
-            }
-          >
-            {listCategory && listCategory.map((node: any) => renderTree(node))}
-          </TreeView>
-        </Box>
-        <Box
-          style={{
-            flex: 3,
-            height: 550,
-            overflow: "scroll",
-            backgroundColor: "white",
-            borderRadius: 5,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderColor: "#ebebeb",
-          }}
-        >
-          <Row>
-            <Typography
-              color="inherit"
-              variant="h5"
-              style={{
-                flex: 14,
                 paddingTop: 20,
                 paddingLeft: 20,
-                paddingBottom: 20,
+                paddingRight: 20,
               }}
             >
-              {category.name}
-            </Typography>
-            <Box style={{ flex: 1 }}>
-              <ActionCategoryDialog
-                item={category}
-                fetchData={fetchAllCategory}
-                isCategory={true}
-              />
-            </Box>
-
-            <Box style={{ flex: 1 }}>
+              <Typography color="inherit" variant="h5" style={{}}>
+                Danh mục
+              </Typography>
               <ActionCategoryDialogCreate
                 fetchData={fetchAllCategory}
-                itemParent={category}
-                titleTooltip="Thêm danh mục con"
+                itemParent={emptyCategory}
+                titleTooltip="Thêm danh mục gốc"
               />
-            </Box>
+            </Row>
 
-            <Box style={{ flex: 1 }}>
-              <DeleteDialog item={category} fetchData={fetchAllCategory} category={true}/>
-            </Box>
-          </Row>
-          <Box style={{ paddingBottom: 20 }}>
-            <TableCustom
-              dataSource={listChildCategory || []}
-              columns={columns}
-              noColumnIndex
-            />
+            {!loadding && (
+              <Box
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            )}
+            <TreeView
+              defaultExpanded={[categoryID]}
+              selected={[categoryID]}
+              className={classes.root}
+              defaultCollapseIcon={
+                <ArrowRightIcon
+                  style={{
+                    marginBottom: 5,
+                  }}
+                />
+              }
+              defaultExpandIcon={
+                <ArrowDropDownIcon
+                  style={{
+                    marginBottom: 5,
+                  }}
+                />
+              }
+            >
+              {listCategory &&
+                listCategory.map((node: any) => renderTree(node))}
+            </TreeView>
           </Box>
-        </Box>
-      </Row>
+          <Box
+            style={{
+              flex: 3,
+              height: 550,
+              overflow: "scroll",
+              backgroundColor: "white",
+              borderRadius: 5,
+              borderStyle: "solid",
+              borderWidth: 1,
+              borderColor: "#ebebeb",
+            }}
+          >
+            {loadding && (
+              <>
+                <Row key={categoryID}>
+                  <Typography
+                    color="inherit"
+                    variant="h5"
+                    style={{
+                      flex: 14,
+                      paddingTop: 20,
+                      paddingLeft: 20,
+                      paddingBottom: 20,
+                    }}
+                  >
+                    {category.name}
+                  </Typography>
+                  <Box style={{ flex: 1 }}>
+                    <ActionCategoryDialog
+                      item={category}
+                      fetchData={fetchAllCategory}
+                      isCategory={true}
+                    />
+                  </Box>
+
+                  <Box style={{ flex: 1 }}>
+                    <ActionCategoryDialogCreate
+                      fetchData={fetchAllCategory}
+                      itemParent={category}
+                      titleTooltip="Thêm danh mục con"
+                    />
+                  </Box>
+
+                  <Box style={{ flex: 1 }}>
+                    <DeleteDialog
+                      item={category}
+                      fetchData={fetchAllCategory}
+                      category={true}
+                    />
+                  </Box>
+                </Row>
+
+                <Box style={{ paddingBottom: 20 }}>
+                  <TableCustom
+                    dataSource={listChildCategory || []}
+                    columns={columns}
+                    noColumnIndex
+                  />
+                </Box>
+              </>
+            )}
+          </Box>
+        </Row>
+      )}
     </>
   );
 };

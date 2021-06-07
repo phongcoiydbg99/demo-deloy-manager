@@ -30,12 +30,12 @@ const ActionCategoryDialog: React.FC<RouteComponentProps<any> & Props> = (
   const [open, setOpen] = useState<boolean>(false);
   const [imageCategory, setImageCategory] = React.useState<string>(item?.image || "");
   const [valid, setValid] = useState<boolean>(false);
-
+  
   const schema = yup.object().shape({
     Name: yup.string().required("Tên sản phẩm không được để trống").nullable(),
   });
 
-  const { handleSubmit, getValues, control, formState } = useForm({
+  const { handleSubmit, getValues, control, formState, setValue } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       Name: item?.name,
@@ -53,6 +53,13 @@ const ActionCategoryDialog: React.FC<RouteComponentProps<any> & Props> = (
 
   const onSubmit = async (data: any) => {
     setValid(true);
+    if ( imageCategory === "") {
+      enqueueSnackbar(
+        "Bạn cần thêm hình ảnh cho danh mục",
+        snackbarSetting((key) => closeSnackbar(key), { color: "error" })
+      );
+      return;
+    }
     try {
       setLoading(true);
       const res: some = await actionUpdateCategory({
