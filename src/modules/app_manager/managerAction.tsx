@@ -22,6 +22,12 @@ export const actionUpdateProduct = (data?: some) => {
     return api({ method: "post", url: "/Product/UpdateProductByAdmin", data });
   }
 };
+export const actionUpdateCategory = (data?: some) => {
+    return api({ method: "post", url: "/Category/UpdateCategory", data });
+};
+export const actionAddCategory = (data?: some) => {
+  return api({ method: "post", url: "/Category/AddCategory", data });
+};
 export const actionGetAllProduct = (params?: some) => {
   return api({
     method: "get",

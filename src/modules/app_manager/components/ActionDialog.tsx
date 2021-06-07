@@ -3,13 +3,14 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ReactComponent as IconEdit } from "../../../assets/icons/ic_edit.svg";
-import { BLUE_NAVY } from "../../../assets/theme/colors";
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
+import { BLUE_NAVY, GREEN_300 } from "../../../assets/theme/colors";
 import { some } from "../../../constants/constants";
 import ConfirmDialog from "../../common/ConfirmDialog";
 
 interface Props {
   item: some;
-  maxWidth: DialogProps['maxWidth'];
+  maxWidth: DialogProps["maxWidth"];
   formId?: string;
   fullWidth: boolean;
   open: boolean;
@@ -18,6 +19,7 @@ interface Props {
   setOpen: (val: boolean) => void;
   setValid?: (val: boolean) => void;
   handleSubmit?: () => void;
+  category?: boolean;
 }
 
 const ActionDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
@@ -32,6 +34,7 @@ const ActionDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
     handleSubmit,
     formId,
     setValid,
+    category,
     ...rest
   } = props;
   const { pathname } = props?.location;
@@ -42,9 +45,26 @@ const ActionDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
   return (
     <>
       {item ? (
-        <IconButton title="Chỉnh sửa" onClick={handleOpen}>
-          <IconEdit />
-        </IconButton>
+        category ? (
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            style={{
+              // minWidth: 132,
+              // marginLeft: 24,
+              background: GREEN_300,
+            }}
+            disableElevation
+            onClick={handleOpen}
+          >
+            <EditRoundedIcon />
+          </Button>
+        ) : (
+          <IconButton title="Chỉnh sửa" onClick={handleOpen}>
+            <IconEdit />
+          </IconButton>
+        )
       ) : (
         <Button
           variant="contained"

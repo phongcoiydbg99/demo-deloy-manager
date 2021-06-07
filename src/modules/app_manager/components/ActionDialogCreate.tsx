@@ -1,13 +1,13 @@
-import { Button, DialogProps, Typography } from '@material-ui/core';
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { BLUE_NAVY } from '../../../assets/theme/colors';
-import ConfirmDialog from '../../common/ConfirmDialog';
-import AddIcon from '@material-ui/icons/Add';
+import { Button, DialogProps, Tooltip, Typography } from "@material-ui/core";
+import React from "react";
+import { FormattedMessage } from "react-intl";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { BLUE_NAVY } from "../../../assets/theme/colors";
+import ConfirmDialog from "../../common/ConfirmDialog";
+import AddIcon from "@material-ui/icons/Add";
 
 interface Props {
-  maxWidth: DialogProps['maxWidth'];
+  maxWidth: DialogProps["maxWidth"];
   formId?: string;
   fullWidth: boolean;
   open: boolean;
@@ -16,6 +16,7 @@ interface Props {
   setOpen: (val: boolean) => void;
   setValid?: (val: boolean) => void;
   handleSubmit?: () => void;
+  titleTooltip?: string;
 }
 
 const ActionDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
@@ -31,6 +32,7 @@ const ActionDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
     setValid,
     handleSubmit,
     formId,
+    titleTooltip,
     ...rest
   } = props;
   const { pathname } = props?.location;
@@ -40,30 +42,33 @@ const ActionDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
 
   return (
     <>
-      <Button
-        variant='contained'
-        color='secondary'
-        size='small'
-        style={{
-          // minWidth: 132,
-          // marginLeft: 24,
-          background: BLUE_NAVY,
-        }}
-        disableElevation
-        onClick={handleOpen}
-      >
-        {/* <FormattedMessage
+      <Tooltip title={titleTooltip || ""}>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          style={{
+            // minWidth: 132,
+            // marginLeft: 24,
+            background: BLUE_NAVY,
+          }}
+          disableElevation
+          onClick={handleOpen}
+        >
+          {/* <FormattedMessage
           id="IDS_CHAT_CREATE"
           values={{ value: pathname.split("/").pop() }}
         /> */}
-        <AddIcon />
-      </Button>
+          <AddIcon />
+        </Button>
+      </Tooltip>
+
       <ConfirmDialog
         titleLabel={
-          <Typography variant='subtitle1' style={{ margin: '12px 16px' }}>
+          <Typography variant="subtitle1" style={{ margin: "12px 16px" }}>
             <FormattedMessage
-              id={'IDS_CHAT_CREATE'}
-              values={{ value: pathname.split('/').pop() }}
+              id={"IDS_CHAT_CREATE"}
+              values={{ value: pathname.split("/").pop() }}
             />
           </Typography>
         }
@@ -79,7 +84,7 @@ const ActionDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
         formId={formId}
         {...rest}
       >
-        <div style={{ padding: '24px 16px', minHeight: 120 }}>
+        <div style={{ padding: "24px 16px", minHeight: 120 }}>
           {props?.children}
         </div>
       </ConfirmDialog>

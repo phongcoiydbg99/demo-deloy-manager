@@ -1,4 +1,4 @@
-import { Avatar, IconButton, Typography } from "@material-ui/core";
+import { Avatar, IconButton, Tooltip, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import DeleteIcon from "@material-ui/icons/Delete";
 import queryString from "query-string";
@@ -24,7 +24,7 @@ import Filter from "../components/Filter";
 import { defaultManagerAccountFilter, IManagerAccountFilter } from "../utils";
 import StorefrontIcon from "@material-ui/icons/Storefront";
 import ReceiptIcon from "@material-ui/icons/Receipt";
-import Icon from '@material-ui/core/Icon'
+import Icon from "@material-ui/core/Icon";
 import { routes } from "../../../../constants/routes";
 function mapStateToProps(state: AppState) {
   return {
@@ -177,39 +177,55 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
         return (
           <Row className="action-container" key={record?.id}>
             {(record.approved === 0 || record.approved === 2) && (
-              <IconButton
-                onClick={() => {
-                  ActionApproveStore(JSON.stringify(record.id));
-                  ActionGrantSalerApprove(
-                    JSON.stringify(record.owner.userName)
-                  );
-                }}
-              >
-                <CheckIcon />
-              </IconButton>
+              <Tooltip title="Đăng kí cửa hàng">
+                <IconButton
+                  onClick={() => {
+                    ActionApproveStore(JSON.stringify(record.id));
+                    ActionGrantSalerApprove(
+                      JSON.stringify(record.owner.userName)
+                    );
+                  }}
+                >
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
             )}
             {record.approved === 1 && (
+              <Tooltip title="Xóa cửa hàng">
+                <IconButton
+                  onClick={() => {
+                    ActionDeleteStore(JSON.stringify(record.id));
+                    ActionRemoveSalerApprove(
+                      JSON.stringify(record.owner.userName)
+                    );
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Quản lý sản phẩm cửa hàng">
               <IconButton
                 onClick={() => {
-                  ActionDeleteStore(JSON.stringify(record.id));
-                  ActionRemoveSalerApprove(
-                    JSON.stringify(record.owner.userName)
+                  props?.history?.push(
+                    `${routes.STORE_MANAGER_PRODUCT}?name=${record.name}&id=${record.id}&page=0&size=10`
                   );
                 }}
               >
-                <DeleteIcon />
+                <StorefrontIcon />
               </IconButton>
-            )}
-            <IconButton onClick={() => {
-              props?.history?.push(`${routes.STORE_MANAGER_PRODUCT}?name=${record.name}&id=${record.id}&page=0&size=10`);
-            }}>
-              <StorefrontIcon />
-            </IconButton>
-            <IconButton onClick={() => {
-              props?.history?.push(`${routes.STORE_MANAGER_TRANSACTION}?name=${record.name}&id=${record.id}&page=0&size=10`);
-            }}>
-              <ReceiptIcon color="primary"/>
-            </IconButton>
+            </Tooltip>
+            <Tooltip title="Quản lý giao dịch cửa hàng">
+              <IconButton
+                onClick={() => {
+                  props?.history?.push(
+                    `${routes.STORE_MANAGER_TRANSACTION}?name=${record.name}&id=${record.id}&page=0&size=10`
+                  );
+                }}
+              >
+                <ReceiptIcon color="primary" />
+              </IconButton>
+            </Tooltip>
           </Row>
         );
       },

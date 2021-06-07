@@ -33,6 +33,7 @@ import { SIDE_BAR_WIDTH, some, USER_ROLE } from "../constants/constants";
 import { routes } from "../constants/routes";
 import ConfirmationDialog from "../modules/app_manager/components/ConfirmCloseDialog";
 import ManagerAccount from "../modules/app_manager/ManagerAccount/pages/ManagerAccount";
+import ManagerCategory from "../modules/app_manager/ManagerCategory/pages/ManagerCategory";
 import ManagerProduct from "../modules/app_manager/ManagerProduct/pages/ManagerProduct";
 import ManagerStoreProduct from "../modules/app_manager/ManagerProduct/pages/ManagerStoreProduct";
 import ManagerStore from "../modules/app_manager/ManagerStore/pages/ManagerStore";
@@ -94,6 +95,11 @@ const SUB_MENU: some[] = [
     name: "Cửa hàng",
     route: routes.STORE_MANAGER,
     component: ManagerStore,
+  },
+  {
+    name: "Danh mục",
+    route: routes.CATEGORY_MANAGER,
+    component: ManagerCategory,
   },
 ];
 const SUB_MENU_STORE: some[] = [

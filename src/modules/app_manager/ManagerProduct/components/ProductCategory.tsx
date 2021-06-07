@@ -34,11 +34,13 @@ const ProductCategory: React.FC<Props> = (props) => {
       const res: some = await actionGetCategoryAllChildList({});
       if (res?.code === SUCCESS_CODE) {
         setListCatergory(res?.category.childList);
-        setLoadding(true);
       } else {
         // none
       }
     } catch (error) {}
+    finally{
+      setLoadding(true);
+    }
   };
 
   React.useEffect(() => {
