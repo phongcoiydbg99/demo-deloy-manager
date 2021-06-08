@@ -147,10 +147,10 @@ const Category: React.FC<Props> = (props) => {
           <Row className="action-container" key={record?.id}>
             <ActionCategoryDialog
               item={record}
-              fetchData={fetchAllCategory}
+              fetchData={fetchAllCategoryChild}
               isCategory={false}
             />
-            <DeleteDialog item={record} fetchData={fetchAllCategory} />
+            <DeleteDialog item={record} fetchData={fetchAllCategoryChild} />
           </Row>
         );
       },
@@ -314,14 +314,14 @@ const Category: React.FC<Props> = (props) => {
                   <Box style={{ flex: 1 }}>
                     <ActionCategoryDialog
                       item={category}
-                      fetchData={fetchAllCategory}
+                      fetchData={fetchAllCategoryChild}
                       isCategory={true}
                     />
                   </Box>
 
                   <Box style={{ flex: 1 }}>
                     <ActionCategoryDialogCreate
-                      fetchData={fetchAllCategory}
+                      fetchData={fetchAllCategoryChild}
                       itemParent={category}
                       titleTooltip="Thêm danh mục con"
                     />

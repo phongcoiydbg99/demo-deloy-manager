@@ -505,6 +505,7 @@ const MainLayout: React.FC<RouteComponentProps<any> & Props> = (props) => {
           handleCloseDialog={handleCloseLogOut}
           onAcceptDialog={() => {
             gotoAction(routes.LOGIN);
+            localStorage.clear();
           }}
           openDialog={openConfirmLogout}
         />

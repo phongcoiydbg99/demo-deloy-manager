@@ -1,4 +1,4 @@
-import { IconButton, Typography, Button } from "@material-ui/core";
+import { IconButton, Typography, Button, Tooltip } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -17,14 +17,16 @@ import {
 } from "../managerAction";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import { RED_500 } from "../../../assets/theme/colors";
+import CloseIcon from "@material-ui/icons/Close";
 interface Props {
   item: some;
   fetchData: () => void;
   category?: boolean;
+  cancelBill?: boolean;
 }
 
 const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
-  const { item, fetchData, category } = props;
+  const { item, fetchData, category, cancelBill } = props;
   const { pathname } = props?.location;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,6 +57,16 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
       else if (pathname === routes.STORE_PRODUCT_MANAGEMENT)
         res = await actionDeleteProduct(JSON.stringify(item?.id));
       else if (pathname === routes.STORE_TRANSACTION_MANAGEMENT) {
+        let temp: some = {};
+        temp = await actionSetStatusCancel({
+          transID: item?.billID,
+        });
+        if (temp?.code === SUCCESS_CODE)
+          res = await actionDeleteBillFromStore({
+            billID: item?.billID,
+          });
+      }
+      else if (pathname === routes.STORE_MANAGER_TRANSACTION) {
         let temp: some = {};
         temp = await actionSetStatusCancel({
           transID: item?.billID,
@@ -96,6 +108,12 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
         >
           <DeleteOutlineIcon />
         </Button>
+      ) : cancelBill ? (
+        <Tooltip title="Hủy đơn hàng">
+          <IconButton onClick={handleOpen}>
+            <CloseIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
         <IconButton title="Xóa" onClick={handleOpen}>
           <IconDelete />

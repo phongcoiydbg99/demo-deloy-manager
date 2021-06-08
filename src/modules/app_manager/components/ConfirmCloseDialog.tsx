@@ -20,7 +20,6 @@ const ConfirmationDialog: React.FC<Props> = (props) => {
     openDialog,
     onAcceptDialog,
   } = props;
-
   return (
     <>
       <ConfirmDialog

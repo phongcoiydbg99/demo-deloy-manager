@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { IconButton, Tooltip, Typography } from "@material-ui/core";
 import queryString from "query-string";
 import React from "react";
 import { connect } from "react-redux";
@@ -7,19 +7,25 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { GREY_600 } from "../../../../assets/theme/colors";
 import { some, SUCCESS_CODE } from "../../../../constants/constants";
 import { formatter } from "../../../../utils/helpers/helpers";
-import { Row } from "../../../common/Elements";
+import { Row, snackbarSetting } from "../../../common/Elements";
 import TableCustom from "../../../common/TableCustom";
 import { AppState } from "../../../rootReducer";
 import DeleteDialog from "../../components/DeleteDialog";
 import HeaderManagement from "../../components/HeaderManagement";
 import "../../Management.scss";
-import { actionListBillManager } from "../../managerAction";
+import {
+  actionListBillManager,
+  actionSetStatusDelivered,
+} from "../../managerAction";
 import Filter from "../components/Filter";
 import {
   defaultManagerTransactionFilter,
   IManagerTransactionFilter,
 } from "../utils";
 import ActionTransactionDialog from "../components/ActionTransactionDialog";
+import CheckIcon from "@material-ui/icons/Check";
+import ConfirmationDialog from "../../components/ConfirmCloseDialog";
+import { useSnackbar } from "notistack";
 
 interface Props {}
 
@@ -34,7 +40,11 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
   const storeId = query.get("id");
   const storeName = query.get("name") || "";
   const history = useHistory();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [dataBillManager, setDataBillManager] = React.useState<some>();
+  const [openConfimDialog, setOpenConfimDialog] =
+    React.useState<boolean>(false);
+  const [billId, setBillId] = React.useState<string>("");
   const [filter, setFilter] = React.useState<IManagerTransactionFilter>(
     defaultManagerTransactionFilter
   );
@@ -66,6 +76,10 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
     updateQueryParams();
   }, [updateQueryParams]);
 
+  const handleCloseConfimDialog = () => {
+    setOpenConfimDialog(false);
+  };
+
   const fetchListBillManager = async () => {
     try {
       const res: some = await actionListBillManager({
@@ -74,6 +88,25 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
       });
       if (res?.code === SUCCESS_CODE) {
         setDataBillManager(res);
+      } else {
+      }
+    } catch (error) {}
+  };
+
+  const fetchSetStatusDelivered = async (id: string) => {
+    try {
+      const res: some = await actionSetStatusDelivered({
+        transID: id,
+      });
+      if (res?.code === SUCCESS_CODE) {
+        fetchListBillManager();
+        handleCloseConfimDialog();
+        enqueueSnackbar(
+          res?.message,
+          snackbarSetting((key) => closeSnackbar(key), {
+            color: res?.code === SUCCESS_CODE ? "success" : "error",
+          })
+        );
       } else {
       }
     } catch (error) {}
@@ -172,10 +205,42 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
       styleHeader: { color: GREY_600, textAlign: "center" },
       render: (record: any) => {
         return (
-          <Row className="action-container" key={record?.id}>
+          <Row
+            className="action-container"
+            key={record?.billID}
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
             {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
+            {record.status !== 1 && record.status !== 2 && (
+              <Tooltip title="Xác nhận đơn hàng">
+                <IconButton
+                  onClick={() => {
+                    setOpenConfimDialog(true);
+                    setBillId(record?.billID);
+                  }}
+                >
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            <ConfirmationDialog
+              dialogTitle="IDS_NOTIFY_STATUS"
+              dialogContent="IDS_NOTIFY_STATUS_CONTENT"
+              handleCloseDialog={handleCloseConfimDialog}
+              onAcceptDialog={() => {
+                fetchSetStatusDelivered(record?.billID);
+              }}
+              openDialog={billId === record?.billID && openConfimDialog}
+            />
             <ActionTransactionDialog item={record} />
-            <DeleteDialog item={record} fetchData={fetchListBillManager} />
+            <DeleteDialog
+              item={record}
+              fetchData={fetchListBillManager}
+              cancelBill={true}
+            />
           </Row>
         );
       },

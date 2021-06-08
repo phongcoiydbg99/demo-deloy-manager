@@ -15,6 +15,9 @@ export const actionGetProductManager = (params?: some) => {
 export const actionAddProduct = (data?: some) => {
   return api({ method: "post", url: "/Product/AddProductByStore", data });
 };
+export const actionSetStatusDelivered = (params?: some) => {
+  return api({ method: "post", url: "Bill/SetStatusDelivered", params, });
+};
 export const actionUpdateProduct = (data?: some) => {
   if (localStorage.getItem(USER_ROLE)?.indexOf("Seller") !== -1) {
     return api({ method: "post", url: "/Product/UpdateProductByStore", data });
