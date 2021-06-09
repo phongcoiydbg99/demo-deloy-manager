@@ -11,7 +11,7 @@ export interface IManagerTransactionFilter extends PaginationFilter {
   api?: string;
   method?: string;
   zoneId?: number;
-  ShipTime?: string;
+  shipDate?: string;
   fromDate?: string;
   toDate?: string;
 }

@@ -91,13 +91,13 @@ const Filter: React.FC<Props> = (props) => {
           optional
         />
         <FormControlTextField
-          id="ShipTime"
+          id="shipDate"
           label={<FormattedMessage id="IDS_CHAT_SHIPTIME" />}
           placeholder={intl.formatMessage({ id: "IDS_CHOOSE_HOLDER" })}
-          value={formik.values.ShipTime}
+          value={formik.values.shipDate}
           onChange={(e) =>
             formik.setFieldValue(
-              "ShipTime",
+              "shipDate",
               e.target.value.length > 0 ? e.target.value : undefined,
               true
             )
