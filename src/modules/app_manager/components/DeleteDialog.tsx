@@ -54,6 +54,8 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
           ID: item?.id,
         });
       // res = await actionDeleteShortcut(item?.id);
+      else if (pathname === routes.PRODUCT_MANAGEMENT)
+        res = await actionDeleteProduct(JSON.stringify(item?.id));
       else if (pathname === routes.STORE_PRODUCT_MANAGEMENT)
         res = await actionDeleteProduct(JSON.stringify(item?.id));
       else if (pathname === routes.STORE_MANAGER_PRODUCT)
@@ -67,8 +69,7 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
           res = await actionDeleteBillFromStore({
             billID: item?.billID,
           });
-      }
-      else if (pathname === routes.STORE_MANAGER_TRANSACTION) {
+      } else if (pathname === routes.STORE_MANAGER_TRANSACTION) {
         let temp: some = {};
         temp = await actionSetStatusCancel({
           transID: item?.billID,
