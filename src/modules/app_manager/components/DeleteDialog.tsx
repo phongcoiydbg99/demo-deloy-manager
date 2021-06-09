@@ -56,6 +56,8 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
       // res = await actionDeleteShortcut(item?.id);
       else if (pathname === routes.STORE_PRODUCT_MANAGEMENT)
         res = await actionDeleteProduct(JSON.stringify(item?.id));
+      else if (pathname === routes.STORE_MANAGER_PRODUCT)
+        res = await actionDeleteProduct(JSON.stringify(item?.id));
       else if (pathname === routes.STORE_TRANSACTION_MANAGEMENT) {
         let temp: some = {};
         temp = await actionSetStatusCancel({
