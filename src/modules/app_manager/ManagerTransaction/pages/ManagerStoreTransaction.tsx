@@ -256,6 +256,7 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
           history.replace({
             search: queryString.stringify({
               ...values,
+              page: 0,
               // ...filter,
             }),
           });

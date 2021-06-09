@@ -180,6 +180,7 @@ const ManagerAccount: React.FC<RouteComponentProps<any> & Props> = (props) => {
           history.replace({
             search: queryString.stringify({
               ...values,
+              page: 0,
               // status: JSON.stringify(values.status),
             }),
           });

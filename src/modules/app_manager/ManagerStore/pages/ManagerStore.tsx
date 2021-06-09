@@ -105,7 +105,7 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
   };
   React.useEffect(() => {
     fetchListAccountManager(); // eslint-disable-next-line
-  }, []);
+  }, [filter]);
 
   const columns = [
     {
@@ -249,6 +249,28 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
         dataSource={dataAccountManager?.store || []}
         columns={columns}
         noColumnIndex
+        paginationProps={{
+          count: dataAccountManager?.total || 0,
+          page: filter.page || 0,
+          rowsPerPage: filter.size || 10,
+          onChangePage: (event: unknown, newPage: number) => {
+            history.replace({
+              search: queryString.stringify({
+                ...filter,
+                page: newPage,
+              }),
+            });
+          },
+          onChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => {
+            history.replace({
+              search: queryString.stringify({
+                ...filter,
+                size: parseInt(event.target.value, 10),
+                page: 0,
+              }),
+            });
+          },
+        }}
       />
     </div>
   );
