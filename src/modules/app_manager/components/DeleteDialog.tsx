@@ -48,7 +48,6 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
       let res: some = {};
       if (pathname === routes.ACCOUNT_MANAGEMENT)
         res = await actionDeleteAccountAdmin(JSON.stringify(item?.userName));
-      else if (pathname === routes.TRANSACTION_MANAGEMENT) res = { a: 1, b: 2 };
       else if (pathname === routes.CATEGORY_MANAGER)
         res = await actionDeleteCategory({
           ID: item?.id,
@@ -60,7 +59,16 @@ const DeleteDialog: React.FC<RouteComponentProps<any> & Props> = (props) => {
         res = await actionDeleteProduct(JSON.stringify(item?.id));
       else if (pathname === routes.STORE_MANAGER_PRODUCT)
         res = await actionDeleteProduct(JSON.stringify(item?.id));
-      else if (pathname === routes.STORE_TRANSACTION_MANAGEMENT) {
+      else if (pathname === routes.TRANSACTION_MANAGEMENT) {
+        let temp: some = {};
+        temp = await actionSetStatusCancel({
+          transID: item?.billID,
+        });
+        if (temp?.code === SUCCESS_CODE)
+          res = await actionDeleteBillFromStore({
+            billID: item?.billID,
+          });
+      } else if (pathname === routes.STORE_TRANSACTION_MANAGEMENT) {
         let temp: some = {};
         temp = await actionSetStatusCancel({
           transID: item?.billID,

@@ -217,18 +217,20 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
             }}
           >
             {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
-            { record.approved !== true && record.status !== 1 && record.status !== 2 && (
-              <Tooltip title="Xác nhận đơn hàng">
-                <IconButton
-                  onClick={() => {
-                    setOpenConfimDialog(true);
-                    setBillId(record?.billID);
-                  }}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </Tooltip>
-            )}
+            {record.approved !== true &&
+              record.status !== 1 &&
+              record.status !== 2 && (
+                <Tooltip title="Xác nhận đơn hàng">
+                  <IconButton
+                    onClick={() => {
+                      setOpenConfimDialog(true);
+                      setBillId(record?.billID);
+                    }}
+                  >
+                    <CheckIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             <ConfirmationDialog
               dialogTitle="IDS_NOTIFY_STATUS"
               dialogContent="IDS_NOTIFY_STATUS_CONTENT"
@@ -239,11 +241,13 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
               openDialog={billId === record?.billID && openConfimDialog}
             />
             <ActionTransactionDialog item={record} />
-            <DeleteDialog
-              item={record}
-              fetchData={fetchListBillManager}
-              cancelBill={true}
-            />
+            {record.status === 0 && (
+              <DeleteDialog
+                item={record}
+                fetchData={fetchListBillManager}
+                cancelBill={true}
+              />
+            )}
           </Row>
         );
       },

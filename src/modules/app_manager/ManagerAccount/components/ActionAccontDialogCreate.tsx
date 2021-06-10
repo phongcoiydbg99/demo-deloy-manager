@@ -32,7 +32,7 @@ const ActionAccontDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
   const [gender, setGender] = React.useState("");
 
   const schema = yup.object().shape({
-    userName: yup.string().required("Tài khoản không được để trống"),
+    account: yup.string().required("Tài khoản không được để trống"),
     password: yup
       .string()
       .required("Mật khẩu không được để trống")
@@ -54,7 +54,7 @@ const ActionAccontDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
     resolver: yupResolver(schema),
     defaultValues: {
       id: "",
-      userName: "",
+      account: "",
       password: "",
       email: "",
       phoneNumber: "",
@@ -136,10 +136,10 @@ const ActionAccontDialogCreate: React.FC<RouteComponentProps<any> & Props> = (
                       formControlStyle={{ width: "100%", marginRight: 0 }}
                       inputProps={{ maxLength: 50, autoComplete: "none" }}
                       inputRef={ref}
-                      errorMessage={errors.userName?.message}
+                      errorMessage={errors.account?.message}
                     />
                   )}
-                  name="userName"
+                  name="account"
                   control={control}
                 />
                 <Controller

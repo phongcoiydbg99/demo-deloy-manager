@@ -203,11 +203,13 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
           >
             {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
             <ActionTransactionDialog item={record} />
-            <DeleteDialog
-              item={record}
-              fetchData={fetchListBillManager}
-              cancelBill={true}
-            />
+            {record.status === 0 && (
+              <DeleteDialog
+                item={record}
+                fetchData={fetchListBillManager}
+                cancelBill={true}
+              />
+            )}
           </Row>
         );
       },
