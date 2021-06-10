@@ -213,7 +213,7 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
             key={record?.id}
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              // justifyContent: "flex-end",
             }}
           >
             {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
