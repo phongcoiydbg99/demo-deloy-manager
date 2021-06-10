@@ -58,12 +58,14 @@ const Category: React.FC<Props> = (props) => {
       const res: some = await actionGetCategoryAllChildList({});
       if (res?.code === SUCCESS_CODE) {
         setListCatergory(res?.category.childList);
-        setCategoryID(res?.category.childList[0].id);
-        setCategory({
-          name: res?.category.childList[0].name,
-          id: res?.category.childList[0].id,
-          image: res?.category.childList[0].image,
-        });
+        if (categoryID === "") {
+          setCategoryID(res?.category.childList[0].id);
+          setCategory({
+            name: res?.category.childList[0].name,
+            id: res?.category.childList[0].id,
+            image: res?.category.childList[0].image,
+          });
+        }
       } else {
         // none
       }
@@ -150,7 +152,7 @@ const Category: React.FC<Props> = (props) => {
               fetchData={fetchAllCategoryChild}
               isCategory={false}
             />
-            <DeleteDialog item={record} fetchData={fetchAllCategoryChild} />
+            <DeleteDialog item={record} fetchData={fetchAllCategory} />
           </Row>
         );
       },
@@ -321,7 +323,7 @@ const Category: React.FC<Props> = (props) => {
 
                   <Box style={{ flex: 1 }}>
                     <ActionCategoryDialogCreate
-                      fetchData={fetchAllCategoryChild}
+                      fetchData={fetchAllCategory}
                       itemParent={category}
                       titleTooltip="Thêm danh mục con"
                     />
