@@ -14,6 +14,7 @@ export interface IManagerTransactionFilter extends PaginationFilter {
   shipDate?: string;
   fromDate?: string;
   toDate?: string;
+  StoreID?: string;
 }
 export const defaultManagerTransactionFilter: IManagerTransactionFilter = { ...defaultPaginationFilter };
 export const setApiParams = (params: some) => {
@@ -154,5 +155,9 @@ export const statusOption = [
   {
     id: 2,
     name: "Đã hủy",
+  },
+  {
+    id: 3,
+    name: "Chưa hoàn thành đơn",
   },
 ];

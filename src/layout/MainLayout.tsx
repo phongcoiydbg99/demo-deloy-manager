@@ -87,11 +87,11 @@ const SUB_MENU: some[] = [
     route: routes.PRODUCT_MANAGEMENT,
     component: ManagerProduct,
   },
-  // {
-  //   name: "Giao dịch",
-  //   route: routes.TRANSACTION_MANAGEMENT,
-  //   component: ManagerTransaction,
-  // },
+  {
+    name: "Giao dịch",
+    route: routes.TRANSACTION_MANAGEMENT,
+    component: ManagerTransaction,
+  },
   {
     name: "Cửa hàng",
     route: routes.STORE_MANAGER,

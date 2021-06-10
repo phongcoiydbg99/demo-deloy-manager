@@ -16,6 +16,7 @@ export interface IManagerProductFilter extends PaginationFilter {
   toPrice?: number;
   searchKey?: string;
   categoryid?: string;
+  StoreID?: string;
 }
 export const defaultManagerProductFilter: IManagerProductFilter = {
   ...defaultPaginationFilter,

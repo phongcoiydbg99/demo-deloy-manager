@@ -208,7 +208,7 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
               <IconButton
                 onClick={() => {
                   props?.history?.push(
-                    `${routes.STORE_MANAGER_PRODUCT}?name=${record.name}&id=${record.id}&page=0&size=10`
+                    `${routes.STORE_MANAGER_PRODUCT}?name=${record.name}&StoreID=${record.id}&page=0&size=10`
                   );
                 }}
               >
@@ -219,7 +219,7 @@ const ManagerStore: React.FC<RouteComponentProps<any> & Props> = (props) => {
               <IconButton
                 onClick={() => {
                   props?.history?.push(
-                    `${routes.STORE_MANAGER_TRANSACTION}?name=${record.name}&id=${record.id}&page=0&size=10`
+                    `${routes.STORE_MANAGER_TRANSACTION}?name=${record.name}&StoreID=${record.id}&page=0&size=10`
                   );
                 }}
               >

@@ -18,11 +18,12 @@ import {
 import FormControlCategoryAutoComplete from "./FormControlCategoryAutoComplete";
 
 interface Props {
+  resetFilter?: () => void;
   filter: IManagerProductFilter;
   onUpdateFilter(filter: IManagerProductFilter): void;
 }
 const Filter: React.FC<Props> = (props) => {
-  const { filter, onUpdateFilter } = props;
+  const { filter, onUpdateFilter, resetFilter } = props;
   const [category, setCategory] = React.useState<any>({ name: "", id: "" });
   const intl = useIntl();
   const formik = useFormik({
@@ -157,7 +158,9 @@ const Filter: React.FC<Props> = (props) => {
           <Button
             onClick={() => {
               formik.setValues(defaultManagerProductFilter);
-              onUpdateFilter(defaultManagerProductFilter);
+              resetFilter
+              ? resetFilter()
+              : onUpdateFilter(defaultManagerProductFilter);
               setCategory({ name: "", id: "" });
             }}
             style={{ marginTop: 10, marginBottom: 10 }}

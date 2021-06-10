@@ -37,7 +37,7 @@ const HeaderManagement: React.FC<RouteComponentProps<any> & Props> = (
       return {
         title: "IDS_CHAT_MANAGEMENT_PRODUCT",
         placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
-        // content: <ActionProductDialogCreate fetchData={fetchData} />,
+        content: <ActionProductDialogCreate fetchData={fetchData} />,
       };
     if (pathname === routes.CATEGORY_MANAGER)
       return {
@@ -67,7 +67,7 @@ const HeaderManagement: React.FC<RouteComponentProps<any> & Props> = (
       return {
         title: "IDS_CHAT_STORE_MANAGER_VALUE",
         placeholder: "IDS_CHAT_MANAGEMENT_PRODUCT_NAME",
-        content: <ActionProductDialogCreate fetchData={fetchData} />,
+        // content: <ActionProductDialogCreate fetchData={fetchData} />,
       };
     if (pathname === routes.STORE_MANAGER_TRANSACTION)
       return {

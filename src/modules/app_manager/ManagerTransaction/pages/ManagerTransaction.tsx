@@ -169,6 +169,8 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
                   ? "green"
                   : record.status === 2
                   ? "red"
+                  : record.status === 3
+                  ? "orange"
                   : "grey",
             }}
           >
@@ -176,6 +178,8 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
               ? "Đã giao"
               : record.status === 2
               ? "Đã hủy"
+              : record.status === 3
+              ? "Chưa hoàn thành đơn"
               : "Chưa giao"}
           </Typography>
         );
@@ -213,7 +217,7 @@ const ManagerTransaction: React.FC<RouteComponentProps<any> & Props> = (
             }}
           >
             {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
-            {record.status !== 1 && record.status !== 2 && (
+            { record.approved !== true && record.status !== 1 && record.status !== 2 && (
               <Tooltip title="Xác nhận đơn hàng">
                 <IconButton
                   onClick={() => {

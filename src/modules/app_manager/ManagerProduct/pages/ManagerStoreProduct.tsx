@@ -29,7 +29,7 @@ const ManagerStoreProduct: React.FC<RouteComponentProps<any> & Props> = (
   const [dataProductManager, setDataProductManager] = React.useState<some>();
   const history = useHistory();
   const query = useQuery();
-  const storeId = query.get("id");
+  const storeId = query.get("StoreID") || "";
   const storeName = query.get("name") || "";
   const [filter, setFilter] = React.useState<IManagerProductFilter>(
     defaultManagerProductFilter
@@ -75,8 +75,23 @@ const ManagerStoreProduct: React.FC<RouteComponentProps<any> & Props> = (
     } catch (error) {}
   };
 
+  const resetFilter = () => {
+    const filterParams = queryString.parse(
+      window.location.search
+    ) as unknown as any;
+    history.replace({
+      search: queryString.stringify({
+        StoreID : filterParams.StoreID,
+        name : filterParams.name,
+        page: 0,
+        size: parseInt(`${filterParams.size}`, 10),
+      }),
+    });
+  }
+
+
   React.useEffect(() => {
-    fetchListProductManager(); // eslint-disable-next-line
+    filter.StoreID && fetchListProductManager(); // eslint-disable-next-line
   }, [filter]);
 
   const columns = [
@@ -263,6 +278,7 @@ const ManagerStoreProduct: React.FC<RouteComponentProps<any> & Props> = (
             }),
           });
         }}
+        resetFilter={resetFilter}
       />
       <TableCustom
         dataSource={dataProductManager?.message.productsList || []}

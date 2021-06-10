@@ -37,14 +37,11 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
   props
 ) => {
   const query = useQuery();
-  const storeId = query.get("id");
+  const storeId = query.get("StoreID") || "";
   const storeName = query.get("name") || "";
   const history = useHistory();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [dataBillManager, setDataBillManager] = React.useState<some>();
-  const [openConfimDialog, setOpenConfimDialog] =
-    React.useState<boolean>(false);
-  const [billId, setBillId] = React.useState<string>("");
   const [filter, setFilter] = React.useState<IManagerTransactionFilter>(
     defaultManagerTransactionFilter
   );
@@ -76,10 +73,6 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
     updateQueryParams();
   }, [updateQueryParams]);
 
-  const handleCloseConfimDialog = () => {
-    setOpenConfimDialog(false);
-  };
-
   const fetchListBillManager = async () => {
     try {
       const res: some = await actionListBillManager({
@@ -93,27 +86,22 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
     } catch (error) {}
   };
 
-  const fetchSetStatusDelivered = async (id: string) => {
-    try {
-      const res: some = await actionSetStatusDelivered({
-        transID: id,
-      });
-      if (res?.code === SUCCESS_CODE) {
-        fetchListBillManager();
-        handleCloseConfimDialog();
-        enqueueSnackbar(
-          res?.message,
-          snackbarSetting((key) => closeSnackbar(key), {
-            color: res?.code === SUCCESS_CODE ? "success" : "error",
-          })
-        );
-      } else {
-      }
-    } catch (error) {}
-  };
+  const resetFilter = () => {
+    const filterParams = queryString.parse(
+      window.location.search
+    ) as unknown as any;
+    history.replace({
+      search: queryString.stringify({
+        StoreID : filterParams.StoreID,
+        name : filterParams.name,
+        page: 0,
+        size: parseInt(`${filterParams.size}`, 10),
+      }),
+    });
+  }
 
   React.useEffect(() => {
-    fetchListBillManager(); // eslint-disable-next-line
+    filter.StoreID && fetchListBillManager(); // eslint-disable-next-line
   }, [filter]);
 
   const columns = [
@@ -170,6 +158,8 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
                   ? "green"
                   : record.status === 2
                   ? "red"
+                  : record.status === 3
+                  ? "orange"
                   : "grey",
             }}
           >
@@ -177,6 +167,8 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
               ? "Đã giao"
               : record.status === 2
               ? "Đã hủy"
+              : record.status === 3
+              ? "Chưa hoàn thành đơn"
               : "Chưa giao"}
           </Typography>
         );
@@ -208,33 +200,8 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
           <Row
             className="action-container"
             key={record?.billID}
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
           >
             {/* <ActionEmployeeDialog item={record} fetchData={fetchData} /> */}
-            {record.status !== 1 && record.status !== 2 && (
-              <Tooltip title="Xác nhận đơn hàng">
-                <IconButton
-                  onClick={() => {
-                    setOpenConfimDialog(true);
-                    setBillId(record?.billID);
-                  }}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <ConfirmationDialog
-              dialogTitle="IDS_NOTIFY_STATUS"
-              dialogContent="IDS_NOTIFY_STATUS_CONTENT"
-              handleCloseDialog={handleCloseConfimDialog}
-              onAcceptDialog={() => {
-                fetchSetStatusDelivered(record?.billID);
-              }}
-              openDialog={billId === record?.billID && openConfimDialog}
-            />
             <ActionTransactionDialog item={record} />
             <DeleteDialog
               item={record}
@@ -261,6 +228,7 @@ const ManagerStoreTransaction: React.FC<RouteComponentProps<any> & Props> = (
             }),
           });
         }}
+        resetFilter={resetFilter}
       />
       <TableCustom
         dataSource={dataBillManager?.detail || []}

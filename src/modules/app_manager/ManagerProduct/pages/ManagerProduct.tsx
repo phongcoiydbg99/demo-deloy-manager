@@ -66,10 +66,9 @@ const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
     try {
       const res: some = await actionGetProductManager({
         ...filter,
-        StoreID: adminRole ? undefined : profile?.userInfo?.store?.id,
+        StoreID: localStorage.getItem("StoreID") || profile?.userInfo?.store?.id ,
         // ...filters,
       });
-      console.log("sadsdadsa2");
       if (res?.code === SUCCESS_CODE) {
         setDataProductManager(res);
       } else {
@@ -78,7 +77,6 @@ const ManagerProduct: React.FC<RouteComponentProps<any> & Props> = (props) => {
   };
 
   React.useEffect(() => {
-    console.log("sadsdadsa5");
     fetchListProductManager(); // eslint-disable-next-line
   }, [filter]);
 

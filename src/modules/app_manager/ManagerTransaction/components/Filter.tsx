@@ -17,22 +17,24 @@ import {
 } from "../utils";
 
 interface Props {
+  resetFilter?: () => void;
   filter: IManagerTransactionFilter;
   onUpdateFilter(filter: IManagerTransactionFilter): void;
 }
 const Filter: React.FC<Props> = (props) => {
-  const { filter, onUpdateFilter } = props;
+  const { filter, onUpdateFilter, resetFilter } = props;
   const intl = useIntl();
   const formik = useFormik({
     initialValues: filter,
     onSubmit: (values) => {
-      (values.status !== -1) ?
-      onUpdateFilter({
-        ...values,
-      }) : onUpdateFilter({
-        ...values,
-        status: undefined,
-      });
+      values.status !== -1
+        ? onUpdateFilter({
+            ...values,
+          })
+        : onUpdateFilter({
+            ...values,
+            status: undefined,
+          });
     },
   });
   React.useEffect(() => {
@@ -111,7 +113,7 @@ const Filter: React.FC<Props> = (props) => {
             statusOption.find((v: some) => v.id === formik.values.status) ||
             null
           }
-          formControlStyle={{ width: 150 }}
+          formControlStyle={{ width: 200 }}
           label={<FormattedMessage id="IDS_CHAT_STATUS" />}
           placeholder={intl.formatMessage({ id: "IDS_CHOOSE_HOLDER" })}
           onChange={(e: any, value: some | null) => {
@@ -127,7 +129,12 @@ const Filter: React.FC<Props> = (props) => {
           type="submit"
           variant="contained"
           size="large"
-          style={{ minWidth: 140, marginRight: 20,marginTop: 10, marginBottom: 10 }}
+          style={{
+            minWidth: 140,
+            marginRight: 20,
+            marginTop: 10,
+            marginBottom: 10,
+          }}
           color="primary"
           disableElevation
         >
@@ -136,7 +143,9 @@ const Filter: React.FC<Props> = (props) => {
         <Button
           onClick={() => {
             formik.setValues(defaultManagerTransactionFilter);
-            onUpdateFilter(defaultManagerTransactionFilter);
+            resetFilter
+              ? resetFilter()
+              : onUpdateFilter(defaultManagerTransactionFilter);
           }}
           style={{ marginTop: 10, marginBottom: 10 }}
         >
